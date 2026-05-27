@@ -42,12 +42,12 @@ def generate_launch_description():
     }
     
     # Tạo node robot_state_publisher (node này giúp công bố trạng thái các khớp của robot)
-    node_cong_bo_trang_thai_robot = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        output='screen',
-        parameters=[tham_so]
-    )
+    # node_cong_bo_trang_thai_robot = Node(
+    #     package='robot_state_publisher',
+    #     executable='robot_state_publisher',
+    #     output='screen',
+    #     parameters=[tham_so]
+    # )
 
     # Node này sẽ tạo ra các khớp giả lập để RSP có thể tính toán TF
     node_cong_bo_trang_thai_khop = Node(
@@ -61,7 +61,7 @@ def generate_launch_description():
         # Khai báo đối số (argument) có thể truyền vào khi chạy lệnh ros2 launch
         DeclareLaunchArgument(
             'use_sim_time',
-            default_value='false',
+            default_value='true',
             description='Sử dụng thời gian mô phỏng nếu là true'),
         DeclareLaunchArgument(
             'use_ros2_control',
@@ -69,5 +69,5 @@ def generate_launch_description():
             description='Use ros2_control if true'),
 
         # Thêm node vào tiến trình khởi chạy
-        node_cong_bo_trang_thai_robot
+        # node_cong_bo_trang_thai_robot
     ])
