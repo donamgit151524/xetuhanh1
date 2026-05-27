@@ -11,11 +11,14 @@ from launch_ros.actions import Node
 def generate_launch_description():
     package_name='xetuhanh1' 
 
+    use_ros2_control = LaunchConfiguration('use_ros2_control')
+
+
     # 1. State Publisher
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','rsp.launch.py'
-                )]), launch_arguments={'use_sim_time': 'true'}.items()
+                )]), launch_arguments={'use_sim_time': 'true', 'use_ros2_control': use_ros2_control}.items()
     )
     
     # 2. Argument gọi world
@@ -29,6 +32,7 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
+            launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + os.path.join(get_package_share_directory('xetuhanh1'), 'config', 'gazebo_params.yaml')}.items()
     )
 
     # 4. Spawn xe vào Gazebo (Dùng spawn_entity.py chuẩn Foxy)
@@ -53,6 +57,10 @@ def generate_launch_description():
 
     # Launch tất cả!
     return LaunchDescription([
+            DeclareLaunchArgument(
+                'use_ros2_control',
+                default_value='true',
+                description='Use ros2_control if true'),
         rsp,
         world_arg,
         gazebo,

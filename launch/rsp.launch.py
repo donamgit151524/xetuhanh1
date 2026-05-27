@@ -7,12 +7,19 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 
+from launch.substitutions import Command
+
 import xacro
 
 def generate_launch_description():
 
     # Lấy giá trị tham số xem có sử dụng thời gian mô phỏng hay không
     su_dung_thoi_gian_mo_phong = LaunchConfiguration('use_sim_time')
+     # Kiểm tra xem chúng ta có đang sử dụng ros2_control hay không
+    use_ros2_control = LaunchConfiguration ( 'use_ros2_control' )
+
+
+
 
     # Đường dẫn đến file robot.urdf.xacro
     duong_dan_goi_goi_goi = os.path.join(get_package_share_directory('xetuhanh1'))
@@ -21,6 +28,13 @@ def generate_launch_description():
     # Chuyển đổi file xacro thành định dạng xml để robot_state_publisher có thể hiểu
     cau_hinh_mo_ta_robot = xacro.process_file(tep_xacro).toxml()
     
+
+
+
+    robot_description_config = Command(['xacro ', xacro_file, ' use_ros2_control:=', use_ros2_control])
+
+
+
     # Thiết lập tham số cho node robot_state_publisher
     tham_so = {
         'robot_description': cau_hinh_mo_ta_robot,  
@@ -49,6 +63,10 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Sử dụng thời gian mô phỏng nếu là true'),
+        DeclareLaunchArgument(
+            'use_ros2_control',
+            default_value='true',
+            description='Use ros2_control if true'),
 
         # Thêm node vào tiến trình khởi chạy
         node_cong_bo_trang_thai_robot
