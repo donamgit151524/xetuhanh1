@@ -31,8 +31,8 @@ def generate_launch_description():
 
 
 
-    robot_description_config = Command(['xacro ', xacro_file, ' use_ros2_control:=', use_ros2_control])
-
+    # Đổi xacro_file thành tep_xacro (tên biến bạn đã khai báo ở dòng 20)
+    robot_description_config = Command(['xacro ', tep_xacro, ' use_ros2_control:=', 'true'])
 
 
     # Thiết lập tham số cho node robot_state_publisher
