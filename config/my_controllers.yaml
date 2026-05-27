@@ -8,36 +8,25 @@ controller_manager:
     joint_broad:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-
 diff_cont:
   ros__parameters:
-
     publish_rate: 50.0
-
     base_frame_id: base_link
 
-    left_wheel_names: ['banh_trai_joint']
-    right_wheel_names: ['banh_phai_joint']
+    left_wheel_names: ['Banh_trai_joint']
+    right_wheel_names: ['Banh_phai_joint']
     wheel_separation: 0.23
     wheel_radius: 0.0325
 
-# joint_broad:
-#   ros__parameters:
-
-diff_cont:
-  ros__parameters:
-    # ... (Các cấu hình bánh xe cũ của bạn giữ nguyên) ...
-    
-    # BỔ SUNG PHẦN NÀY ĐỂ XE CHẠY MƯỢT, KHÔNG LẬT
     linear:
       x:
         has_velocity_limits    : true
-        max_velocity           : 1.0   # Tốc độ tối đa (m/s) - Giảm xuống nếu xe vẫn giật
+        max_velocity           : 1.0
         has_acceleration_limits: true
-        max_acceleration       : 0.5   # Gia tốc tối đa (m/s^2) - Giúp xe tăng tốc từ từ
+        max_acceleration       : 0.5
     angular:
       z:
         has_velocity_limits    : true
-        max_velocity           : 1.5   # Tốc độ xoay tối đa (rad/s)
+        max_velocity           : 1.5
         has_acceleration_limits: true
-        max_acceleration       : 1.0   # Gia tốc xoay
+        max_acceleration       : 1.0
