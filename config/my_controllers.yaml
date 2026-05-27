@@ -18,8 +18,26 @@ diff_cont:
 
     left_wheel_names: ['banh_trai_joint']
     right_wheel_names: ['banh_phai_joint']
-    wheel_separation: 0.35
-    wheel_radius: 0.05
+    wheel_separation: 0.23
+    wheel_radius: 0.0325
 
 # joint_broad:
 #   ros__parameters:
+
+diff_cont:
+  ros__parameters:
+    # ... (Các cấu hình bánh xe cũ của bạn giữ nguyên) ...
+    
+    # BỔ SUNG PHẦN NÀY ĐỂ XE CHẠY MƯỢT, KHÔNG LẬT
+    linear:
+      x:
+        has_velocity_limits    : true
+        max_velocity           : 1.0   # Tốc độ tối đa (m/s) - Giảm xuống nếu xe vẫn giật
+        has_acceleration_limits: true
+        max_acceleration       : 0.5   # Gia tốc tối đa (m/s^2) - Giúp xe tăng tốc từ từ
+    angular:
+      z:
+        has_velocity_limits    : true
+        max_velocity           : 1.5   # Tốc độ xoay tối đa (rad/s)
+        has_acceleration_limits: true
+        max_acceleration       : 1.0   # Gia tốc xoay

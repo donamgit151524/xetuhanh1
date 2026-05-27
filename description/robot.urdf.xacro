@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
 
 
-    <xacro:arg name="Su_Dung_ros2_control" default="true"/>
+
 
 
 
@@ -13,13 +13,9 @@
 
 
 
-    <xacro:if value="$(arg Su_Dung_ros2_control)">
-        <xacro:include filename="ros2_control.xacro" />
-    </xacro:if>
 
-    <xacro:unless value="$(arg Su_Dung_ros2_control)">
-        <xacro:include filename="gazebo_control.xacro" />
-    </xacro:unless>
+    <xacro:include filename="ros2_control.xacro" />
+    <!-- <xacro:include filename="gazebo_control.xacro" /> -->
 
 
 

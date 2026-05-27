@@ -3,7 +3,7 @@
 
     <ros2_control name="GazeboSystem" type="system">
         <hardware>
-            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
         </hardware>
         
         <joint name="Banh_trai_joint">
@@ -25,9 +25,8 @@
     </ros2_control>
 
     <gazebo>
-        <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system.so">
-            <!-- Make sure to put your package name in there!! -->
-            <parameters>$(find my_bot)/config/my_controllers.yaml</parameters>
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+            <parameters>$(find xetuhanh1)/config/my_controllers.yaml</parameters>
         </plugin>
     </gazebo>
 

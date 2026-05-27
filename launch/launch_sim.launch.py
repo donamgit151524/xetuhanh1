@@ -6,57 +6,57 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
-
 from launch_ros.actions import Node
 
-
 def generate_launch_description():
+    package_name='xetuhanh1' 
 
-    # 1. Khai báo các biến tên gói và tên robot để dễ dàng thay đổi sau này
-    package_name = 'xetuhanh1'
-    robot_name = 'Sieu_xe_AGV'
-
-    # Khởi tạo Launch Configuration cho môi trường (world)
-    world = LaunchConfiguration('world')
-
-    # 2. Định nghĩa tham số world (giống tư duy của tác giả)
+    # 1. State Publisher
+    rsp = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(package_name),'launch','rsp.launch.py'
+                )]), launch_arguments={'use_sim_time': 'true'}.items()
+    )
+    
+    # 2. Argument gọi world
     world_arg = DeclareLaunchArgument(
         'world',
-        default_value='', # Để trống mặc định sẽ tải world trống của Gazebo
-        description='Đường dẫn đến file .world của Gazebo'
+        default_value="empty.world",
+        description='World to load'
     )
 
-    # Chạy file rsp.launch.py từ package của bạn
-    rsp = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory(package_name), 'launch', 'rsp.launch.py'
-        )]), launch_arguments={'use_sim_time': 'true'}.items()
-    )
-
-    # Khởi chạy Gazebo Classic (tối ưu: truyền thêm tham số world)
+    # 3. Khởi chạy Gazebo Classic (Chuẩn Foxy)
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py'
-        )]),
-        launch_arguments={'world': world}.items()
+            get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
     )
 
-    # 3. Khởi tạo robot (tối ưu: thêm toạ độ -z 0.1)
-    spawn_entity = Node(
-        package='gazebo_ros', 
-        executable='spawn_entity.py',
-        arguments=[
-            '-topic', 'robot_description',
-            '-entity', robot_name,
-            '-z', '0.1'  # Thả robot cách mặt đất 0.1m để tránh kẹt bánh xe
-        ],
-        output='screen'
+    # 4. Spawn xe vào Gazebo (Dùng spawn_entity.py chuẩn Foxy)
+    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+                        arguments=['-topic', 'robot_description',
+                                   '-entity', 'xetuhanh1',
+                                   '-z', '0.1'],
+                        output='screen')
+
+    # 5. Khởi động các Controller
+    diff_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["diff_cont"],
     )
 
-    # Chạy tất cả các tiến trình
+    joint_broad_spawner = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["joint_broad"],
+    )
+
+    # Launch tất cả!
     return LaunchDescription([
-        world_arg,
         rsp,
+        world_arg,
         gazebo,
         spawn_entity,
+        diff_drive_spawner,
+        joint_broad_spawner,
     ])
