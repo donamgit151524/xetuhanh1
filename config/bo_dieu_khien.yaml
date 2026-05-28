@@ -1,6 +1,9 @@
+# Cấu hình bộ điều khiển ROS2 cho robot
+# use_sim_time = true: nếu chạy trong Gazebo mô phỏng thì phải bật.
+# Nếu chạy trên robot thật thì để false hoặc không thiết lập.
 controller_manager:
   ros__parameters:
-    use_sim_time: true   # <--- THÊM DÒNG NÀY
+    use_sim_time: true
     update_rate: 30
 
     diff_cont:
@@ -11,15 +14,18 @@ controller_manager:
 
 diff_cont:
   ros__parameters:
-    use_sim_time: true   # <--- THÊM DÒNG NÀY
+    # Sử dụng thời gian mô phỏng
+    use_sim_time: true
     publish_rate: 50.0
     base_frame_id: base_link
-    
-    # ÉP PHÁT ODOM CHO SLAM
-    odom_frame_id: odom
+
+    # Nếu true, bộ điều khiển sẽ phát transform giữa odom và base_link.
     enable_odom_tf: true
-    
+
+    # Nếu dùng velocity stamped, đổi thành true.
     use_stamped_vel: false
+
+    # Tên các joint của bánh xe trái/phải trong URDF
     left_wheel_names: ['Banh_trai_joint']
     right_wheel_names: ['Banh_phai_joint']
     wheel_separation: 0.23

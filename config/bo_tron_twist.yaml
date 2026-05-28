@@ -1,0 +1,17 @@
+# Cấu hình twist_mux dùng để trộn lệnh từ bàn phím và joystick.
+# use_stamped = false: lệnh velocity không cần stamped header.
+# Nếu muốn dùng lệnh stamped, chuyển thành true.
+twist_mux:
+  ros__parameters:
+    use_stamped: false
+
+    topics:
+      keyboard:
+        topic   : cmd_vel_keyboard
+        timeout : 0.5
+        priority: 90
+      joystick:
+        topic   : cmd_vel_joy
+        timeout : 0.5
+        priority: 100
+        

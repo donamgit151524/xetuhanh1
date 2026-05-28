@@ -1,7 +1,7 @@
 slam_toolbox:
   ros__parameters:
 
-    # Plugin params
+    # Tham số plugin giải phương trình tối ưu cho SLAM
     solver_plugin: solver_plugins::CeresSolver
     ceres_linear_solver: SPARSE_NORMAL_CHOLESKY
     ceres_preconditioner: SCHUR_JACOBI
@@ -9,65 +9,63 @@ slam_toolbox:
     ceres_dogleg_type: TRADITIONAL_DOGLEG
     ceres_loss_function: None
 
-    # ROS Parameters
-    odom_frame: odom
-    map_frame: map
-    base_frame: base_link
-    scan_topic: /scan
-    mode: mapping #localization
+    # Thông số ROS frame và topic
+    odom_frame: odom            # frame ODOM do robot publish
+    map_frame: map              # frame của bản đồ SLAM
+    base_frame: base_link       # frame đại diện cho thân robot
+    scan_topic: /scan           # topic của dữ liệu laser
+    mode: mapping               # mapping = tạo bản đồ, localization = định vị trên bản đồ có sẵn
 
-    # if you'd like to immediately start continuing a map at a given pose
-    # or at the dock, but they are mutually exclusive, if pose is given
-    # will use pose
-    map_file_name: /home/mayao3/da_ws/map28
+    # Bắt đầu từ bản đồ trước hoặc vị trí xác định (nếu cần)
+    # map_file_name: /home/mayao3/da_ws/map28
     # map_start_pose: [0.0, 0.0, 0.0]
-    #map_start_at_dock: true
+    # map_start_at_dock: true
 
-    debug_logging: false
-    throttle_scans: 1
-    transform_publish_period: 0.02 #if 0 never publishes odometry
-    map_update_interval: 5.0
-    resolution: 0.05
-    max_laser_range: 12.0 #for rastering images
-    minimum_time_interval: 0.5
-    transform_timeout: 0.5
-    tf_buffer_duration: 30.
-    stack_size_to_use: 40000000 #// program needs a larger stack size to serialize large maps
-    enable_interactive_mode: true
+    debug_logging: false        # bật logger gỡ lỗi chi tiết nếu cần sửa lỗi
+    throttle_scans: 1           # giữ lại mỗi 1 scan để giảm tải tính toán
+    transform_publish_period: 0.02  # chu kỳ publish odom/TF; nếu 0 thì không publish odometry
+    map_update_interval: 5.0       # thời gian (giây) update lại bản đồ
+    resolution: 0.05               # độ phân giải ô lưới bản đồ (m)
+    max_laser_range: 12.0          # khoảng cách laser tối đa dùng để render ảnh raster
+    minimum_time_interval: 0.5     # khoảng thời gian tối thiểu giữa hai scan
+    transform_timeout: 0.5         # timeout cho transform TF
+    tf_buffer_duration: 30.0       # thời gian lưu trữ buffer TF
+    stack_size_to_use: 40000000    # cần stack lớn để serialize bản đồ lớn
+    enable_interactive_mode: true  # cho phép chế độ tương tác với SLAM toolbox
 
-    # General Parameters
-    use_scan_matching: true
-    use_scan_barycenter: true
-    minimum_travel_distance: 0.5
-    minimum_travel_heading: 0.5
-    scan_buffer_size: 10
-    scan_buffer_maximum_scan_distance: 10.0
-    link_match_minimum_response_fine: 0.1  
-    link_scan_maximum_distance: 1.5
-    loop_search_maximum_distance: 3.0
-    do_loop_closing: true 
-    loop_match_minimum_chain_size: 10           
-    loop_match_maximum_variance_coarse: 3.0  
-    loop_match_minimum_response_coarse: 0.35    
-    loop_match_minimum_response_fine: 0.45
+    # Tham số chung của scan matching và loop closure
+    use_scan_matching: true                # dùng scan matching để tối ưu vị trí robot
+    use_scan_barycenter: true              # sử dụng barycenter của scan để tối ưu hóa
+    minimum_travel_distance: 0.5           # di chuyển tối thiểu trước khi map thêm scan mới (m)
+    minimum_travel_heading: 0.5            # quay tối thiểu trước khi map thêm scan mới (rad)
+    scan_buffer_size: 10                   # số lượng scan lưu tạm
+    scan_buffer_maximum_scan_distance: 10.0 # khoảng cách scan tối đa trong buffer
+    link_match_minimum_response_fine: 0.1   # ngưỡng chất lượng tương đồng cho match tinh
+    link_scan_maximum_distance: 1.5        # khoảng cách tối đa cho scan link
+    loop_search_maximum_distance: 3.0      # khoảng cách tối đa tìm loop closure
+    do_loop_closing: true                  # bật đóng vòng loop closure
+    loop_match_minimum_chain_size: 10      # số điểm tối thiểu một loop closure cần có
+    loop_match_maximum_variance_coarse: 3.0 # độ lệch tối đa cho tìm kiếm thô
+    loop_match_minimum_response_coarse: 0.35 # ngưỡng response thô
+    loop_match_minimum_response_fine: 0.45   # ngưỡng response tinh
 
-    # Correlation Parameters - Correlation Parameters
-    correlation_search_space_dimension: 0.5
-    correlation_search_space_resolution: 0.01
-    correlation_search_space_smear_deviation: 0.1 
+    # Tham số correlation cho tìm kiếm tương quan (scan matching)
+    correlation_search_space_dimension: 0.5      # không gian tìm kiếm theo khoảng cách
+    correlation_search_space_resolution: 0.01   # độ phân giải tìm kiếm
+    correlation_search_space_smear_deviation: 0.1 # độ lệch Gaussian khi tính correlation
 
-    # Correlation Parameters - Loop Closure Parameters
-    loop_search_space_dimension: 8.0
-    loop_search_space_resolution: 0.05
-    loop_search_space_smear_deviation: 0.03
+    # Tham số loop closure (tìm lại vòng lặp)
+    loop_search_space_dimension: 8.0        # không gian tìm kiếm loop closure (m)
+    loop_search_space_resolution: 0.05     # độ phân giải tìm kiếm loop closure
+    loop_search_space_smear_deviation: 0.03 # độ lệch Gaussian cho loop closure
 
-    # Scan Matcher Parameters
-    distance_variance_penalty: 0.5      
-    angle_variance_penalty: 1.0    
+    # Tham số scan matcher chi tiết
+    distance_variance_penalty: 0.5      # phạt sai lệch khoảng cách
+    angle_variance_penalty: 1.0         # phạt sai lệch góc
 
-    fine_search_angle_offset: 0.00349     
-    coarse_search_angle_offset: 0.349   
-    coarse_angle_resolution: 0.0349        
-    minimum_angle_penalty: 0.9
-    minimum_distance_penalty: 0.5
-    use_response_expansion: true
+    fine_search_angle_offset: 0.00349    # lệch góc cho tìm kiếm tinh (rad)
+    coarse_search_angle_offset: 0.349    # lệch góc cho tìm kiếm thô (rad)
+    coarse_angle_resolution: 0.0349      # độ phân giải góc cho tìm kiếm thô
+    minimum_angle_penalty: 0.9           # phạt tối thiểu khi sai lệch góc
+    minimum_distance_penalty: 0.5        # phạt tối thiểu khi sai lệch khoảng cách
+    use_response_expansion: true         # mở rộng response để cải thiện matching

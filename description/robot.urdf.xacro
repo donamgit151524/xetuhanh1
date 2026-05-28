@@ -3,6 +3,11 @@
 
 
 
+    <!--
+        use_ros2_control = true: sử dụng ROS2 Control để quản lý controller trong Gazebo.
+        use_ros2_control = false: dùng plugin Gazebo trực tiếp, không dùng ROS2 Control.
+        Chỉ cần đổi true/false để thay đổi chức năng điều khiển robot.
+    -->
     <xacro:arg name="use_ros2_control" default="true"/>
 
 
