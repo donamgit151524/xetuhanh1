@@ -51,11 +51,13 @@ def generate_launch_description():
         package='twist_mux',
         executable='twist_mux',
         output='screen',
-        remappings=[('/cmd_vel_out', '/diff_cont/cmd_vel')], # <--- Sửa ở đây
+        # Đã thêm _unstamped vào đuôi
+        remappings=[('/cmd_vel_out', '/diff_cont/cmd_vel_unstamped')], 
         parameters=[
             {'use_sim_time': True},
             twist_mux_config])
-    
+
+            
     return LaunchDescription([
         rsp,
         world_arg,

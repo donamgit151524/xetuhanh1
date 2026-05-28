@@ -53,7 +53,8 @@
         </collision>
         <xacro:quan_tinh_hinh_hop mass="${KhoiLuongKhung}" x="${dai}" y="${rong}" z="${cao}">
         <!-- <origin xyz="${dai/2} 0 0.0" rpy="0 0 0"/> -->
-        <origin xyz="${dai/2} 0 ${ban_kinh_banh_xe}" rpy="0 0 0"/>
+        <!-- <origin xyz="${dai/2} 0 ${ban_kinh_banh_xe}" rpy="0 0 0"/> -->
+        <origin xyz="${dai/2} 0 -0.05" rpy="0 0 0"/>
     </xacro:quan_tinh_hinh_hop>
     </link>
     <gazebo reference="khung">
