@@ -8,7 +8,7 @@ teleop_node:
   ros__parameters:
 
     # Information for TwistStamped header
-    publish_stamped_twist: true
+    publish_stamped_twist: false
     frame: 'base_link'
     
     # Axis mappings

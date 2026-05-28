@@ -7,7 +7,7 @@
 
 
     <xacro:include filename="cauhinh_robot.xacro" />
-    <xacro:include filename="gazebo_control.xacro" />
+    
     <xacro:include filename="lidar.xacro" />
 
 

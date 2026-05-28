@@ -7,7 +7,7 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
 
-    package_name='xetuhanh1' #<--- CHANGE ME
+    package_name='xetuhanh1' 
 
     use_sim_time = LaunchConfiguration('use_sim_time')
 
@@ -24,7 +24,8 @@ def generate_launch_description():
         executable='teleop_node',
         name = 'teleop_node',
         parameters=[{'use_sim_time': use_sim_time}, joy_params],
-        remappings={('/cmd_vel', '/cmd_vel_joy')},
+        # Đã sửa {} thành []
+        remappings=[('/cmd_vel', '/cmd_vel_joy')], 
     )   
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -32,4 +33,5 @@ def generate_launch_description():
             default_value='false',
             description='Use sim time if true'),
         joy_node,
+        teleop_node, # <--- BẠN ĐÃ THIẾU DÒNG NÀY Ở CODE CŨ
     ])

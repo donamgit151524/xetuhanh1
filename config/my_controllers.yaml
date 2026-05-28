@@ -12,7 +12,7 @@ diff_cont:
   ros__parameters:
     publish_rate: 50.0
     base_frame_id: base_link
-
+    use_stamped_vel: false
     left_wheel_names: ['Banh_trai_joint']
     right_wheel_names: ['Banh_phai_joint']
     wheel_separation: 0.23
